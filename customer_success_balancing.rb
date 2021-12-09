@@ -32,7 +32,7 @@ class CustomerSuccessBalancing
       end
     end
 
-    return 0 if count == 0 || hasEquals?(quantity_customers_per_cs)
+    return 0 if quantity_customers_per_cs.max_by{ |k| k[:customers] }[:customers] == 0 || hasEquals?(quantity_customers_per_cs)
 
     quantity_customers_per_cs.max_by{ |k| k[:customers] }[:id]
   end
@@ -49,6 +49,15 @@ class CustomerSuccessBalancing
 end
 
 class CustomerSuccessBalancingTests < Minitest::Test
+  def test_customers_bigger_than_all_cs
+    balancer = CustomerSuccessBalancing.new(
+      build_scores([60, 20, 95, 75]),
+      build_scores([90, 20, 70, 40, 60, 10, 100, 120]),
+      [2, 4]
+    )
+    assert_equal 1, balancer.execute
+  end
+
   def test_scenario_one
     balancer = CustomerSuccessBalancing.new(
       build_scores([60, 20, 95, 75]),
