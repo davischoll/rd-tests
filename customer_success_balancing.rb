@@ -43,9 +43,7 @@ class CustomerSuccessBalancing
     list = []
 
     quantity_customers_per_cs.each do |cs|
-      if cs[:customers] != 0
-        list << cs[:customers]
-      end
+      list << cs[:customers] if cs[:customers] != 0
     end
 
     list != list.uniq
