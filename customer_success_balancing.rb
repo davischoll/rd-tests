@@ -32,9 +32,7 @@ class CustomerSuccessBalancing
       end
     end
 
-    return 0 if count == 0
-
-    return 0 if hasEquals?(quantity_customers_per_cs)
+    return 0 if count == 0 || hasEquals?(quantity_customers_per_cs)
 
     quantity_customers_per_cs.max_by{ |k| k[:customers] }[:id]
   end
