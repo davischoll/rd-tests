@@ -24,17 +24,21 @@ class CustomerSuccessBalancing
       if @customers[customer_index][:score] <= @customer_success[cs_index][:score]
         count += 1
         customer_index += 1
-        quantity_customers_per_cs[cs_index] = {id: @customer_success[cs_index][:id], customers: count }
+        quantity_customers_per_cs[cs_index] = { cs: @customer_success[cs_index][:id], customers: count }
       else
-        quantity_customers_per_cs[cs_index] = {id: @customer_success[cs_index][:id], customers: count }
+        quantity_customers_per_cs[cs_index] = { cs: @customer_success[cs_index][:id], customers: count }
         cs_index += 1
         count = 0
       end
     end
 
-    return 0 if quantity_customers_per_cs.max_by{ |k| k[:customers] }[:customers] == 0 || hasEquals?(quantity_customers_per_cs)
+    return 0 if max_customers_per_cs(quantity_customers_per_cs)[:customers] == 0 || hasEquals?(quantity_customers_per_cs)
 
-    quantity_customers_per_cs.max_by{ |k| k[:customers] }[:id]
+    max_customers_per_cs(quantity_customers_per_cs)[:cs]
+  end
+
+  def max_customers_per_cs(quantity_customers_per_cs)
+    quantity_customers_per_cs.max_by{ |k| k[:customers] }
   end
 
   def hasEquals?(quantity_customers_per_cs)
