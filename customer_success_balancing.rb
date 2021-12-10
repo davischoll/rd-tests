@@ -10,6 +10,7 @@ class CustomerSuccessBalancing
 
   # Returns the ID of the customer success with most customers
   def execute
+    # Filters the CSs and sorts the lists of CSs and Customers
     @customer_success.reject! { |cs| @away_customer_success.include? cs[:id] }
     @customer_success.sort_by! { |cs| cs[:score] }
     @customers.sort_by! { |customer| customer[:score] }
@@ -20,6 +21,8 @@ class CustomerSuccessBalancing
     customer_index = 0
     count = 0
 
+    # Go through both lists, relating Customers to CSs according to their score,
+    # adding and recording the number of Customers served by each CS
     while customer_index < @customers.size && cs_index < @customer_success.size
       if @customers[customer_index][:score] <= @customer_success[cs_index][:score]
         count += 1
@@ -32,15 +35,19 @@ class CustomerSuccessBalancing
       end
     end
 
+    # Returns value 0 if all CSs have no Customers or if two or more CSs have the same number of Customers
     return 0 if max_customers_per_cs(quantity_customers_per_cs)[:customers] == 0 || has_equals?(quantity_customers_per_cs)
 
+    # Returns the ID of the CS with most Customers
     max_customers_per_cs(quantity_customers_per_cs)[:cs]
   end
 
+  # Returns CS's id with bigger quantity of Customers and his number of Customers
   def max_customers_per_cs(quantity_customers_per_cs)
     quantity_customers_per_cs.max_by{ |k| k[:customers] }
   end
 
+  # Returns whether or not there are two or more equal values in the given list
   def has_equals?(quantity_customers_per_cs)
     list = []
 
