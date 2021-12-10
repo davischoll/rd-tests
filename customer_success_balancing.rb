@@ -32,7 +32,7 @@ class CustomerSuccessBalancing
       end
     end
 
-    return 0 if max_customers_per_cs(quantity_customers_per_cs)[:customers] == 0 || hasEquals?(quantity_customers_per_cs)
+    return 0 if max_customers_per_cs(quantity_customers_per_cs)[:customers] == 0 || has_equals?(quantity_customers_per_cs)
 
     max_customers_per_cs(quantity_customers_per_cs)[:cs]
   end
@@ -41,7 +41,7 @@ class CustomerSuccessBalancing
     quantity_customers_per_cs.max_by{ |k| k[:customers] }
   end
 
-  def hasEquals?(quantity_customers_per_cs)
+  def has_equals?(quantity_customers_per_cs)
     list = []
 
     quantity_customers_per_cs.each do |cs|
